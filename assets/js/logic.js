@@ -26,14 +26,19 @@ const theHistory = document.querySelector('#history');
 const today = document.querySelector('#today');
 const forecast = document.querySelector('#forecast');
 const ApiKey = '3ac8e7e0b94efb1de4e85813ee49a8f8';
-const ApiUrl = 'https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=' + ApiKey;
 
-// api.openweathermap.org/geo/1.0/direct?q={city name},{state code},{country code}&limit={limit}&appid={API key}
-let townName = 'London';
-http: $.ajax({
+let townName = 'Liverpool';
+$.ajax({
   url: `http://api.openweathermap.org/geo/1.0/direct?q=${townName}&limit=1&appid=${ApiKey}`,
   method: 'GET',
 }).then(function (response) {
-  console.log(response);
-  console.log(response[0].name);
+  let townNameLat = response[0].lat;
+  let townNameLon = response[0].lon;
+
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&appid=${ApiKey}`,
+    method: 'GET',
+  }).then(function (response2) {
+    console.log(response2);
+  });
 });
