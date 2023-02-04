@@ -12,10 +12,7 @@
 //     * The humidity
 //     * The wind speed
 //   * When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
-//     * The date
-//     * An icon representation of weather conditions
-//     * The temperature
-//     * The humidity
+// same
 //   * When a user click on a city in the search history they are again presented with current and future conditions for that city
 
 const formHeading = document.querySelector('#form-heading');
@@ -36,9 +33,16 @@ $.ajax({
   let townNameLon = response[0].lon;
 
   $.ajax({
-    url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&appid=${ApiKey}`,
+    // url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&cnt=5&appid=${ApiKey}&units=metric`,
+    url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&appid=${ApiKey}&units=metric`,
     method: 'GET',
   }).then(function (response2) {
     console.log(response2);
+    let currentDate = new Date().toDateString();
+    let urlIcon = `http://openweathermap.org/img/w/${response2.weather[0].icon}.png`;
+    today.innerHTML = `<h1 style="display:inline;">${townName}(${currentDate})<img style="display:'inline-block'" src="${urlIcon}" ></h1>
+                        <p>Temperature : ${response2.main.temp}</p>
+                        <p>Wind Speed: ${response2.wind.speed}</p>
+                        <p>Humidity: ${response2.main.humidity}</p>`;
   });
 });
