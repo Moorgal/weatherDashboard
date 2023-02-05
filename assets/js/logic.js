@@ -40,6 +40,18 @@ if (sortedArray.length === 0) {
 } else {
   townName = localStorage.getItem(sortedArray[sortedArray.length - 1]);
 }
+function renderHistory() {
+  for (let i = sortedArray.length - 1; i >= 0; i--) {
+    console.log(localStorage.getItem(sortedArray[i]));
+    let h2 = document.createElement('button');
+    h2.classList.add('btn');
+    let h2text = document.createTextNode(localStorage.getItem(sortedArray[i]));
+    h2.appendChild(h2text);
+    theHistory.appendChild(h2);
+  }
+}
+
+renderHistory();
 
 $.ajax({
   url: `http://api.openweathermap.org/geo/1.0/direct?q=${townName}&limit=1&appid=${ApiKey}`,
