@@ -1,20 +1,3 @@
-// get data
-// search data
-// display data
-// save last searches to localStorage
-
-//   * When a user searches for a city they are presented with current and future conditions for that city and that city is added to the search history
-//   * When a user views the current weather conditions for that city they are presented with:
-//     * The city name
-//     * The date
-//     * An icon representation of weather conditions
-//     * The temperature
-//     * The humidity
-//     * The wind speed
-//   * When a user view future weather conditions for that city they are presented with a 5-day forecast that displays:
-// same
-//   * When a user click on a city in the search history they are again presented with current and future conditions for that city
-
 const formHeading = document.querySelector('#form-heading');
 const searchForm = document.querySelector('#search-form');
 const searchInput = document.querySelector('#search-input');
@@ -43,11 +26,12 @@ if (sortedArray.length === 0) {
 function renderHistory() {
   for (let i = sortedArray.length - 1; i >= 0; i--) {
     console.log(localStorage.getItem(sortedArray[i]));
-    let h2 = document.createElement('button');
-    h2.classList.add('btn');
-    let h2text = document.createTextNode(localStorage.getItem(sortedArray[i]));
-    h2.appendChild(h2text);
-    theHistory.appendChild(h2);
+    let historyButton = document.createElement('button');
+    historyButton.classList.add('btn');
+    historyButton.classList.add('historyBtn');
+    let historyButtontext = document.createTextNode(localStorage.getItem(sortedArray[i]));
+    historyButton.appendChild(historyButtontext);
+    theHistory.appendChild(historyButton);
   }
 }
 
@@ -61,7 +45,6 @@ $.ajax({
   let townNameLon = response[0].lon;
 
   $.ajax({
-    // url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&cnt=5&appid=${ApiKey}&units=metric`,
     url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&appid=${ApiKey}&units=metric`,
     method: 'GET',
   }).then(function (response2) {
@@ -71,6 +54,41 @@ $.ajax({
                         <p>Temperature : ${response2.main.temp}</p>
                         <p>Wind Speed: ${response2.wind.speed}</p>
                         <p>Humidity: ${response2.main.humidity}</p>`;
+  });
+  // ------------------------
+  // ----forecast-----------
+  // ----------------------
+  $.ajax({
+    url: `https://api.openweathermap.org/data/2.5/forecast?lat=${townNameLat}&lon=${townNameLon}&cnt=50&appid=${ApiKey}&units=metric`,
+    method: 'GET',
+  }).then(function (response3) {
+    for (let i = 0; i <= 40; i = i + 8) {
+      //   console.log(i);
+      //   console.log(response3.list[i].dt_txt);
+      let forecastDiv = document.createElement('div');
+      let h2 = document.createElement('h2');
+      let h2text = document.createTextNode(new Date(response3.list[i].dt_txt).toLocaleDateString());
+      let urlIcon = `http://openweathermap.org/img/w/${response3.list[i].weather[0].icon}.png`;
+      let imgIcon = document.createElement('img');
+      imgIcon.setAttribute('src', urlIcon);
+      let p1 = document.createElement('p');
+      let p1text = document.createTextNode(`Temp:${response3.list[i].main.temp}`);
+      let p2 = document.createElement('p');
+      let p2text = document.createTextNode(`Wind:${response3.list[i].wind.speed}`);
+      let p3 = document.createElement('p');
+      let p3text = document.createTextNode(`Humidity:${response3.list[i].main.humidity}`);
+      h2.appendChild(h2text);
+      p1.appendChild(p1text);
+      p2.appendChild(p2text);
+      p2.appendChild(p3text);
+      forecastDiv.appendChild(h2);
+      forecastDiv.appendChild(imgIcon);
+      forecastDiv.appendChild(p1);
+      forecastDiv.appendChild(p2);
+      forecastDiv.appendChild(p3);
+
+      forecast.appendChild(forecastDiv);
+    }
   });
 });
 
