@@ -24,7 +24,23 @@ const today = document.querySelector('#today');
 const forecast = document.querySelector('#forecast');
 const ApiKey = '3ac8e7e0b94efb1de4e85813ee49a8f8';
 
-let townName = 'Liverpool';
+function submit() {
+  localStorage.setItem(new Date().toLocaleString(), searchInput.value.trim());
+}
+
+let localStorageArray = [];
+for (let i = 0; i < localStorage.length; ++i) {
+  localStorageArray.push(localStorage.key(i));
+}
+let allArray = localStorageArray.sort();
+let sortedArray = allArray.splice(-5);
+let townName;
+if (sortedArray.length === 0) {
+  townName = 'London';
+} else {
+  townName = localStorage.getItem(sortedArray[sortedArray.length - 1]);
+}
+
 $.ajax({
   url: `http://api.openweathermap.org/geo/1.0/direct?q=${townName}&limit=1&appid=${ApiKey}`,
   method: 'GET',
@@ -37,8 +53,7 @@ $.ajax({
     url: `https://api.openweathermap.org/data/2.5/weather?lat=${townNameLat}&lon=${townNameLon}&appid=${ApiKey}&units=metric`,
     method: 'GET',
   }).then(function (response2) {
-    console.log(response2);
-    let currentDate = new Date().toDateString();
+    let currentDate = new Date().toLocaleDateString();
     let urlIcon = `http://openweathermap.org/img/w/${response2.weather[0].icon}.png`;
     today.innerHTML = `<h1 style="display:inline;">${townName}(${currentDate})<img style="display:'inline-block'" src="${urlIcon}" ></h1>
                         <p>Temperature : ${response2.main.temp}</p>
@@ -46,3 +61,5 @@ $.ajax({
                         <p>Humidity: ${response2.main.humidity}</p>`;
   });
 });
+
+searchButton.addEventListener('click', submit);
