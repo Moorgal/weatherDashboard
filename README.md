@@ -9,4 +9,4 @@ Deployed Application:
 
 ![alt text](http://url/to/img.png)
 
-<!-- ![alt text](http://url/to/img.png) -->
+<!-- ![alt text](https://github.com/Moorgal/weatherDashboard/blob/main/assets/images/Untitled-1.jpg) -->
