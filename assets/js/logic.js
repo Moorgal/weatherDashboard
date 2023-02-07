@@ -67,7 +67,7 @@ $.ajax({
     method: 'GET',
   }).then(function (response2) {
     let currentDate = new Date().toLocaleDateString();
-    let urlIcon = `http://openweathermap.org/img/w/${response2.weather[0].icon}.png`;
+    let urlIcon = `https://openweathermap.org/img/w/${response2.weather[0].icon}.png`;
     today.innerHTML = `<h1 style="display:inline;">${townName}(${currentDate})<img style="display:'inline-block'" src="${urlIcon}" ></h1>
                         <p>Temperature : ${response2.main.temp}</p>
                         <p>Wind Speed: ${response2.wind.speed}</p>
@@ -86,7 +86,7 @@ $.ajax({
       let forecastDiv = document.createElement('div');
       let h2 = document.createElement('h4');
       let h2text = document.createTextNode(new Date(response3.list[i].dt_txt).toLocaleDateString());
-      let urlIcon = `http://openweathermap.org/img/w/${response3.list[i].weather[0].icon}.png`;
+      let urlIcon = `https://openweathermap.org/img/w/${response3.list[i].weather[0].icon}.png`;
       let imgIcon = document.createElement('img');
       imgIcon.setAttribute('src', urlIcon);
       let p1 = document.createElement('p');
