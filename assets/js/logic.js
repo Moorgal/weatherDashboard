@@ -55,7 +55,7 @@ historyBtns.forEach(function (oneBtn) {
 // ----get geodata-----------
 
 $.ajax({
-  url: `http://api.openweathermap.org/geo/1.0/direct?q=${townName}&limit=1&appid=${ApiKey}`,
+  url: `https://api.openweathermap.org/geo/1.0/direct?q=${townName}&limit=1&appid=${ApiKey}`,
   method: 'GET',
 }).then(function (response) {
   let townNameLat = response[0].lat;
